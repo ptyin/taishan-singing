@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+$started = true;
 function guid()
 {
     $code="ABCDEFGHIGKLMNOPQRSTUVWXYZ";
@@ -21,13 +22,13 @@ if(isset($_GET['started'])&&is_bool(json_decode($_GET['started'])))
     $file = fopen("started.txt", "w") or die("Unable to open file!");
     fwrite($file, $_GET['started']);
     fclose($file);
-    $started = json_decode($_GET['started']);
+    $started= json_decode($_GET['started']);
     echo "started:".$_GET['started'];
 }
 else
 {
     $file = fopen("started.txt", "r") or die("Unable to open file!");
-    $started = boolval(json_decode(readfile($file)));
+    $started = json_decode(fread($file,filesize("started.txt")));
     fclose($file);
 }
 
