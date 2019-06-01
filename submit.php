@@ -22,7 +22,7 @@ if(isset($_GET['started'])&&is_bool(json_decode($_GET['started'])))
     fwrite($file, $_GET['started']);
     fclose($file);
     $started = json_decode($_GET['started']);
-    echo "started!";
+    echo "started:".$_GET['started'];
 }
 else
 {
