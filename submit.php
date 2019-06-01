@@ -1,8 +1,5 @@
 <?php
 include "config.php";
-$file = fopen("started.txt", "r") or die("Unable to open file!");
-$started = boolval(json_decode(readfile($file)));
-fclose($file);
 function guid()
 {
     $code="ABCDEFGHIGKLMNOPQRSTUVWXYZ";
@@ -21,19 +18,29 @@ function guid()
 }
 if(isset($_GET['started'])&&is_bool(json_decode($_GET['started'])))
 {
-    $file = fopen("started.txt", "w");
+    $file = fopen("started.txt", "w") or die("Unable to open file!");
     fwrite($file, $_GET['started']);
-}
-if(isset($_COOKIE['once']))
-{
-    echo "fail";
+    fclose($file);
+    $started = json_decode($_GET['started']);
+    echo "started!";
 }
 else
 {
-    if(!$started)
+    $file = fopen("started.txt", "r") or die("Unable to open file!");
+    $started = boolval(json_decode(readfile($file)));
+    fclose($file);
+}
+
+if(!$started)
+{
+    http_response_code(403);
+    echo "not started";
+}
+else
+{
+    if(isset($_COOKIE['once']))
     {
-        http_response_code(403);
-        echo "not started";
+        echo "fail";
     }
     else
     {
